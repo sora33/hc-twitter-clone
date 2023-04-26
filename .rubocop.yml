@@ -1,0 +1,8 @@
+require:
+  - rubocop-rails
+  - rubocop-rspec
+Style/Documentation:
+  Enabled: false
+Metrics/MethodLength:
+  Exclude:
+    - 'db/migrate/*'
