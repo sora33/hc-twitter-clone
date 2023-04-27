@@ -23,10 +23,10 @@ module Myapp
     # config.eager_load_paths << Rails.root.join("extras")
     config.generators do |g|
       g.test_framework :rspec,
-                        fixtures: false,
-                        view_specs: false,
-                        helper_specs: false,
-                        routing_specs: false
+                       fixtures: false,
+                       view_specs: false,
+                       helper_specs: false,
+                       routing_specs: false
       g.factory_bot false
       g.template_engine = :slim
     end
