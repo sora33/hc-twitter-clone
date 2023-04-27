@@ -101,10 +101,6 @@ GEM
       devise (>= 4.9.0)
     devise-i18n-views (0.3.7)
     diff-lcs (1.5.0)
-    dotenv (2.8.1)
-    dotenv-rails (2.8.1)
-      dotenv (= 2.8.1)
-      railties (>= 3.2)
     erubi (1.12.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -128,15 +124,6 @@ GEM
     jsbundling-rails (1.1.1)
       railties (>= 6.0.0)
     json (2.6.3)
-    launchy (2.5.2)
-      addressable (~> 2.8)
-    letter_opener (1.8.1)
-      launchy (>= 2.2, < 3)
-    letter_opener_web (2.0.0)
-      actionmailer (>= 5.2)
-      letter_opener (~> 1.7)
-      railties (>= 5.2)
-      rexml
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -314,13 +301,11 @@ DEPENDENCIES
   devise
   devise-i18n
   devise-i18n-views
-  dotenv-rails
   factory_bot_rails
   html2slim
   htmlbeautifier
   jbuilder
   jsbundling-rails
-  letter_opener_web
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.0)
