@@ -15,7 +15,7 @@ services:
       - bundle:/usr/local/bundle
       - node_modules:/myapp/node_modules
     ports:
-      - "3000:3000"
+      - "3334:3000"
     depends_on:
       - db
   js:
