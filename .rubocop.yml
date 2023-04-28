@@ -11,3 +11,6 @@ Metrics/AbcSize:
     - "db/migrate/*"
 Rails/LexicallyScopedActionFilter:
   Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - "config/environments/production.rb"
