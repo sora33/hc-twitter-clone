@@ -59,7 +59,7 @@ gem 'devise-i18n' # 日本語化
 gem 'devise-i18n-views' # 日本語化
 gem 'html2slim' # htmlをslimに変換する
 gem 'slim-rails' # slimを使う
-# gem 'letter_opener_web' # 開発環境のメール
+gem 'letter_opener_web' # 開発環境のメール
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
