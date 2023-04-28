@@ -55,3 +55,6 @@ docker compose run --rm web bin/htmlbeautifier
 
 ルートの確認
 http://localhost:3334/rails/info/routes
+
+環境変数
+BACKEND_URL
