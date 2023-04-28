@@ -1,15 +1,11 @@
 ## 課題のリンク
-
-* https://example.com
+* https://github.com/happiness-chain/practice/blob/main/11_Ruby_on_Rails/002_twitter_clone.md
 
 ## やったこと
-
-* このプルリクで何をしたのか？
-
+* サインアップ、ログイン機能実装
 
 ## 動作確認方法
-
-* 動作確認方法の手順を書いてください
+* Herokuにデプロイ：　https://mighty-garden-90803.herokuapp.com/users/sign_in
 
 ## その他
 
