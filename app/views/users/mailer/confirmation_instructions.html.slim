@@ -1,0 +1,8 @@
+p
+  | ようこそ 
+  = @email
+  | さん！
+p
+  | 以下のリンクをクリックして、アカウントのメールアドレスを確認してください:
+p
+  = link_to 'アカウントを確認する', user_confirmation_url(confirmation_token: @token)

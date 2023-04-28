@@ -6,3 +6,11 @@ Style/Documentation:
 Metrics/MethodLength:
   Exclude:
     - 'db/migrate/*'
+Metrics/AbcSize:
+  Exclude:
+    - "db/migrate/*"
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - "config/environments/production.rb"
