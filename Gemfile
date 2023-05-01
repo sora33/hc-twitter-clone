@@ -59,7 +59,6 @@ gem 'devise-i18n' # 日本語化
 gem 'devise-i18n-views' # 日本語化
 gem 'html2slim' # htmlをslimに変換する
 gem 'slim-rails' # slimを使う
-# gem 'letter_opener_web' # 開発環境のメール
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -71,6 +70,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem 'htmlbeautifier'
+  gem 'letter_opener_web' # 開発環境のメール
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
