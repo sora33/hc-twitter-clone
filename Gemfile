@@ -58,6 +58,8 @@ gem 'devise' # 認証ライブラリ
 gem 'devise-i18n' # 日本語化
 gem 'devise-i18n-views' # 日本語化
 gem 'html2slim' # htmlをslimに変換する
+gem 'omniauth-github' # GitHub認証
+gem 'omniauth-rails_csrf_protection'
 gem 'slim-rails' # slimを使う
 
 group :development, :test do
