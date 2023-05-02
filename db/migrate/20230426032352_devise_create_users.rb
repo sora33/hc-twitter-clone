@@ -8,8 +8,8 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.0]
       t.string :encrypted_password, null: false, default: ''
 
       # orignal
-      t.string :tel, null: false
-      t.datetime :birthday, null: false
+      t.string :tel
+      t.datetime :birthday
       t.string :name
       t.string :description
       t.string :place
