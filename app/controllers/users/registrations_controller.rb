@@ -54,8 +54,9 @@ module Users
 
     # ユーザー情報更新時にパスワード入力なしで更新できるようにする
     def update_resource(resource, params)
-      return super if params["password"]&.present?
-      resource.update_without_password(params.except("current_password"))
+      return super if params['password']&.present?
+
+      resource.update_without_password(params.except('current_password'))
     end
 
     # If you have extra params to permit, append them to the sanitizer.
