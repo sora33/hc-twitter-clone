@@ -4,12 +4,7 @@ class TweetsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @tweets = current_user.recommended_tweets.page(params[:page])
-  end
-
-  def recommended
-    @tweets = current_user.recommended_tweets.page(params[:page])
-    render :index
+    @tweets = current_user.all_tweets.page(params[:page])
   end
 
   def following
