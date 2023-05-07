@@ -58,7 +58,7 @@ class User < ApplicationRecord
     Tweet.where(user_id: following.ids)
   end
 
-  def recommended_tweets
+  def all_tweets
     Tweet.all.order(created_at: :desc)
   end
 
