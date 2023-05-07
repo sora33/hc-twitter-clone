@@ -7,6 +7,17 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable,
          :omniauthable, omniauth_providers: [:github]
 
+  # Relationships
+  has_many :tweets, dependent: :destroy
+  has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy,
+                                  inverse_of: :follower
+  has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy,
+                                   inverse_of: :followed
+  has_many :following, through: :active_relationships, source: :followed
+  has_many :followers, through: :passive_relationships, source: :follower
+
+  has_one_attached :avatar
+
   validates :tel, presence: true, unless: :from_omniauth?
   validates :birthday, presence: true, unless: :from_omniauth?
 
@@ -29,7 +40,7 @@ class User < ApplicationRecord
         provider: auth.provider, uid: auth.uid
       )
       user.skip_confirmation! # 確認メールをスキップ
-    else  # 既存のユーザーにGitHubの情報を追加
+    else # 既存のユーザーにGitHubの情報を追加
       user.update!(provider: auth.provider, uid: auth.uid)
     end
   end
@@ -40,5 +51,27 @@ class User < ApplicationRecord
 
   def from_omniauth?
     provider.present? && uid.present?
+  end
+
+  # ツイートに関するメソッド
+  def following_tweets
+    Tweet.where(user_id: following.ids)
+  end
+
+  def recommended_tweets
+    Tweet.all.order(created_at: :desc)
+  end
+
+  # フォローに関するメソッド
+  def follow(other_user)
+    following << other_user
+  end
+
+  def unfollow(other_user)
+    following.delete(other_user)
+  end
+
+  def following?(other_user)
+    following.include?(other_user)
   end
 end

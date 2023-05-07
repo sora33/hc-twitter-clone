@@ -1,0 +1,5 @@
+li.ps-1
+  = link_to local_assigns[:path], class: 'text-decoration-none link-dark d-block p-3' do
+    i class="bi #{local_assigns[:icon]} #{current_page?(local_assigns[:path]) ? 'text-primary' : ''}"
+    span.ms-2 class="#{current_page?(local_assigns[:path]) ? 'text-primary fw-bold' : ''}"
+      = local_assigns[:text]
