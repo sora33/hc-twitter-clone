@@ -21,9 +21,9 @@ user3 = User.create!(email: 'user3@example.com', password: 'password', password_
 
 # ツイートを作成 (各ユーザーが10個ずつ)
 20.times do |i|
-  user1.tweets.create!(content: "Hello from user1! Tweet ##{i + 1}")
-  user2.tweets.create!(content: "Hello from user2! Tweet ##{i + 1}")
-  user3.tweets.create!(content: "Hello from user3! Tweet ##{i + 1}")
+  user1.tweets.create!(content: "こんにちは！ツイートです！ user1がツイートしています！! ツイート番号は： ##{i + 1}")
+  user2.tweets.create!(content: "こんにちは！ツイートです！ user2がツイートしています！! ツイート番号は： ##{i + 1}")
+  user3.tweets.create!(content: "こんにちは！ツイートです！ user3がツイートしています！! ツイート番号は： ##{i + 1}")
 end
 
 # フォロー関係を作成
@@ -31,4 +31,4 @@ user1.follow(user2)
 user1.follow(user3)
 user2.follow(user3)
 user3.follow(user1)
-User.find_by(email: 'shuuuya0616@gmail.com').follow(user1)
+# User.find_by(email: 'shuuuya0616@gmail.com').follow(user1)
