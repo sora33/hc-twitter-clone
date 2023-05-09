@@ -58,3 +58,6 @@ http://localhost:3334/rails/info/routes
 
 環境変数
 BACKEND_URL
+
+
+docker exec -it rails_twitter_clone-web-1 /bin/bash

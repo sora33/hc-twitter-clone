@@ -1,0 +1,17 @@
+nav.navbar.navbar-expand-sm.navbar-light.border-gray.border-bottom
+  .container
+    = link_to root_path, class:"text-decoration-none" do
+      = image_tag 'logo.png', class: 'navbar-brand-logo', style:"width: 1rem; margin-right: 1rem"
+      span = 'Twitterクローン'
+    button.navbar-toggler type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+      span.navbar-toggler-icon
+    .collapse.navbar-collapse#navbarSupportedContent
+      ul.navbar-nav.ms-auto.mb-2.mb-lg-0
+        - if user_signed_in?
+          li.nav-item
+            = button_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'btn btn-outline-primary'
+        - else
+          li.nav-item
+            = button_to 'ログイン', new_user_session_path, class: 'btn btn-outline-primary me-3'
+          li.nav-item
+            = button_to '新規登録', new_user_registration_path, class: 'btn btn-primary'

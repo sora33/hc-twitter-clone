@@ -1,2 +1,11 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+
+
+.file-input {
+  display: none;
+}
+
+.file-label {
+  cursor: pointer;
+}

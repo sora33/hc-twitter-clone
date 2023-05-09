@@ -54,10 +54,13 @@ gem 'bootsnap', require: false
 # gem "image_processing", "~> 1.2"
 
 # 自分で追加した
+gem 'aws-sdk-s3' # S3の設定（Active-storage）
+gem 'bootstrap5-kaminari-views' # ページネーションのデザイン
 gem 'devise' # 認証ライブラリ
 gem 'devise-i18n' # 日本語化
 gem 'devise-i18n-views' # 日本語化
 gem 'html2slim' # htmlをslimに変換する
+gem 'kaminari' # ページネーション
 gem 'omniauth-github' # GitHub認証
 gem 'omniauth-rails_csrf_protection'
 gem 'slim-rails' # slimを使う
