@@ -46,14 +46,10 @@
 # Comment.create!(content: "Comment 1", user: myAccount, tweet: tweet1)
 # Like.create!(user: myAccount, tweet: tweet1)
 
-# 全ての既存ユーザーに対して、1つのツイート作成
+# 全ての既存ユーザーで、ツイートを作成し、ランダムなツイートをリツイート・いいね・コメントをする
 User.all.each do |user|
   tweet = user.tweets.create!(content: 'こんにちは！ツイートです！')
   tweet.update!(content: "#{tweet.content} tweets_ID: #{tweet.id}")
-end
-
-# 全ての既存ユーザーはランダムなツイートをリツイート・いいね・コメントをする
-User.all.each do |user|
   random_tweet1 = Tweet.all.sample
   random_tweet2 = Tweet.all.sample
   random_tweet3 = Tweet.all.sample
