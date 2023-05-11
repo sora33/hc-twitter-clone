@@ -11,10 +11,9 @@ html
   body
     = render partial: 'layouts/header'
     .container
-      .row
+      .row.flex-nowrap
         - if user_signed_in?
           .col-auto.p-0.border-gray.border-end
             = render partial: 'layouts/sidebar'
-        .col.border-gray.border-end style='max-width: 700px;'
+        .col.border-gray.border-end
           = yield
-  

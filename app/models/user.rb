@@ -8,7 +8,6 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: [:github]
 
   # Relationships
-  has_many :tweets, dependent: :destroy
   has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy,
                                   inverse_of: :follower
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy,
@@ -16,7 +15,15 @@ class User < ApplicationRecord
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
 
-  has_one_attached :avatar
+  # フロフィール画像
+  has_one_attached :profile_image
+  has_one_attached :header_image
+
+  # ツイートに関するアソシエーション
+  has_many :tweets, dependent: :destroy
+  has_many :retweets, dependent: :destroy
+  has_many :comments, dependent: :destroy
+  has_many :likes, dependent: :destroy
 
   validates :tel, presence: true, unless: :from_omniauth?
   validates :birthday, presence: true, unless: :from_omniauth?
@@ -60,6 +67,22 @@ class User < ApplicationRecord
 
   def all_tweets
     Tweet.all.order(created_at: :desc)
+  end
+
+  def ordered_tweets
+    tweets.order(created_at: :desc)
+  end
+
+  def ordered_retweets
+    retweets.order(created_at: :desc).map(&:tweet)
+  end
+
+  def ordered_comments
+    comments.order(created_at: :desc).map(&:tweet)
+  end
+
+  def ordered_likes
+    likes.order(created_at: :desc).map(&:tweet)
   end
 
   # フォローに関するメソッド

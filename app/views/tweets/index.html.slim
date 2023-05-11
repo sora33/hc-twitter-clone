@@ -5,33 +5,26 @@ nav.nav-pills
     li.nav-item.col-6 class="#{current_page?(following_tweets_path) ? 'fw-bold text-muted' : ''}"
       = link_to 'フォロー中', following_tweets_path, class: 'nav-link link-dark'
 
-.container.mt-3
-  .row
-    .col
-      .d-flex.mt-3
-        / アバター
-        .me-3
-          - if current_user.avatar.present?
-            = image_tag current_user.avatar.url, width: 40, height: 40, class: "rounded-circle"
-          - else
-            = image_tag 'https://source.unsplash.com/phIFdC6lA4E/40x40', width: 40, height: 40, class: "rounded-circle"
-        / ツイート投稿フォーム
-        = form_with model: @tweet, local: true, class: "flex-fill" do |f|
-          .form-group
-            = f.text_area :content, class: "form-control mb-2", placeholder: "いまどうしてる？"
-            .d-flex.align-items-center.justify-content-between.mt-3
-              .d-flex.align-items-center
-                = f.file_field :image, id: 'file-input', class: "file-input"
-                label.file-label for="file-input"
-                  i.bi.bi-image.text-primary class="mr-1" style="font-size: 1.5em;"
-              = f.submit "ツイートする", class: "btn btn-primary"
+.d-flex.mt-3
+  / アバター
+  .me-3
+    - if current_user.profile_image.present?
+      = link_to user_path(current_user) do
+        = image_tag current_user.profile_image.url, width: 40, height: 40, class: "rounded-circle"
+    - else
+      = link_to user_path(current_user) do
+        = image_tag 'https://source.unsplash.com/phIFdC6lA4E/40x40', width: 40, height: 40, class: "rounded-circle"
+  / ツイート投稿フォーム
+  = form_with model: @tweet, local: true, class: "flex-fill" do |f|
+    .form-group
+      = f.text_area :content, class: "form-control mb-2", placeholder: "いまどうしてる？"
+      .d-flex.align-items-center.justify-content-between.mt-3
+        .d-flex.align-items-center
+          = f.file_field :image, id: 'file-input', class: "file-input"
+          label.file-label for="file-input"
+            i.bi.bi-image.text-primary class="mr-1" style="font-size: 1.5em;"
+        = f.submit "ツイートする", class: "btn btn-primary"
 
 / ツイートの一覧
 div.list-group.mt-3
-  = render partial: 'tweets/tweet', collection: @tweets
-
-/ ページネーション
-nav.mt-3
-  = paginate @tweets, theme: 'bootstrap-5'
-
-
+  = render 'tweets/tweet', tweets: @tweets
