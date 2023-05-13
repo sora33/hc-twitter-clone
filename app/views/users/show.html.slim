@@ -11,7 +11,7 @@
         = image_tag @user.profile_image, class: "rounded-circle", width: "150"
       - else
         = image_tag "https://source.unsplash.com/phIFdC6lA4E/40x40", class: "rounded-circle", width: "150"
-      h4.card-title = @user.name.present? ? @user.name : "undefined"
+      h4.card-title.mt-2 = @user.name.present? ? @user.name : "undefined"
       .text-muted = @user.email
       - if @user.description.present?
         p.card-text = @user.description
