@@ -8,17 +8,17 @@ class UsersController < ApplicationController
   end
 
   def retweets
-    @tweets = Kaminari.paginate_array(@user.ordered_retweets).page(params[:page])
+    @tweets = @user.ordered_retweets.page(params[:page])
     render :show
   end
 
   def comments
-    @tweets = Kaminari.paginate_array(@user.ordered_comments).page(params[:page])
+    @tweets = @user.ordered_comments.page(params[:page])
     render :show
   end
 
   def likes
-    @tweets = Kaminari.paginate_array(@user.ordered_likes).page(params[:page])
+    @tweets = @user.ordered_likes.page(params[:page])
     render :show
   end
 
