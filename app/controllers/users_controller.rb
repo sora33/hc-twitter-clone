@@ -2,14 +2,13 @@
 
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update tweets retweets comments likes]
-  before_action :is_current_user, only: %i[edit update]
+  before_action :correct_user, only: %i[edit update]
 
   def show
     @tweets = @user.ordered_tweets.page(params[:page])
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     Rails.logger.debug "User params: #{user_params.inspect}"
@@ -46,7 +45,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(:name, :profile_image, :header_image, :description, :place, :website, :birthday)
   end
 
-  def is_current_user
+  def correct_user
     redirect_to root_path, notice: '無効なURLです' unless @user == current_user
   end
 end

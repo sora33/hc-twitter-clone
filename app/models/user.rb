@@ -15,8 +15,6 @@ class User < ApplicationRecord
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
 
-
-
   # ツイートに関するアソシエーション
   has_many :tweets, dependent: :destroy
   has_many :retweets, dependent: :destroy
