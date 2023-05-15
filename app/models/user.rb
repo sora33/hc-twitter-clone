@@ -8,7 +8,6 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: [:github]
 
   # Relationships
-  has_many :tweets, dependent: :destroy
   has_many :active_relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy,
                                   inverse_of: :follower
   has_many :passive_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy,
@@ -16,7 +15,18 @@ class User < ApplicationRecord
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
 
-  has_one_attached :avatar
+  # フロフィール画像
+  has_one_attached :profile_image
+  has_one_attached :header_image
+
+  # ツイートに関するアソシエーション
+  has_many :tweets, dependent: :destroy
+  has_many :retweets, dependent: :destroy
+  has_many :retweet_tweets, through: :retweets, source: :tweet
+  has_many :comments, dependent: :destroy
+  has_many :comment_tweets, through: :comments, source: :tweet
+  has_many :likes, dependent: :destroy
+  has_many :like_tweets, through: :likes, source: :tweet
 
   validates :tel, presence: true, unless: :from_omniauth?
   validates :birthday, presence: true, unless: :from_omniauth?
@@ -24,7 +34,11 @@ class User < ApplicationRecord
   def self.find_for_github_oauth(auth)
     # GitHubアカウントがあれば返す
     user = User.where(provider: auth.provider, uid: auth.uid).first
-    return user if user
+
+    if user
+      user.update!(name: auth.info.name) if user.name.nil?
+      return user
+    end
 
     # 既存ユーザーがいれば返す、いなければ新規作成する
     user = User.where(email: auth.info.email).first_or_initialize
@@ -37,7 +51,7 @@ class User < ApplicationRecord
     if user.new_record? # 新しいユーザーの場合
       user.assign_attributes(
         email: auth.info.email, password: Devise.friendly_token[0, 20],
-        provider: auth.provider, uid: auth.uid
+        provider: auth.provider, uid: auth.uid, name: auth.info.name
       )
       user.skip_confirmation! # 確認メールをスキップ
     else # 既存のユーザーにGitHubの情報を追加
@@ -60,6 +74,22 @@ class User < ApplicationRecord
 
   def all_tweets
     Tweet.all.order(created_at: :desc)
+  end
+
+  def ordered_tweets
+    tweets.order(created_at: :desc)
+  end
+
+  def ordered_retweets
+    retweet_tweets.order(created_at: :desc)
+  end
+
+  def ordered_comments
+    comment_tweets.order(created_at: :desc)
+  end
+
+  def ordered_likes
+    like_tweets.order(created_at: :desc)
   end
 
   # フォローに関するメソッド

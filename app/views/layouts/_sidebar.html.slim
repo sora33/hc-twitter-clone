@@ -5,6 +5,6 @@ ul.list-unstyled.fs-5
   = render partial: 'layouts/sidebar_link', locals: {path: user_registration_path, icon: 'bi-envelope', text: 'メッセージ'}
   = render partial: 'layouts/sidebar_link', locals: {path: user_registration_path, icon: 'bi-bookmark', text: 'ブックマーク'}
   = render partial: 'layouts/sidebar_link', locals: {path: user_registration_path, icon: 'bi-gem', text: 'Twitter Blue'}
-  = render partial: 'layouts/sidebar_link', locals: {path: user_registration_path, icon: 'bi-person', text: 'プロフィール'}
+  = render partial: 'layouts/sidebar_link', locals: {path: user_path(current_user), icon: 'bi-person', text: 'プロフィール'}
   = render partial: 'layouts/sidebar_link', locals: {path: user_registration_path, icon: 'bi-three-dots', text: 'もっと見る'}
   = render partial: 'layouts/sidebar_link', locals: {path: user_registration_path, icon: 'bi-twitter', text: 'ツイートする'}
