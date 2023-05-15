@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   end
 
   # ユーザーのリソース
-  resources :users, only: [:show] do
+  resources :users, only: %i[show edit update] do
     member do
       get :tweets, :retweets, :comments, :likes
     end
