@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 
   def update
     Rails.logger.debug "User params: #{user_params.inspect}"
-    if @user.update(user_params)
+    if current_user.update(user_params)
       redirect_to @user, notice: 'プロフィールを変更できました。'
     else
       Rails.logger.debug "Validation errors: #{@user.errors.full_messages.join(', ')}"
