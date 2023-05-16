@@ -17,11 +17,12 @@ Rails.application.routes.draw do
   end
 
   # ユーザーのリソース
-  resources :users, only: %i[show edit update] do
+  resources :users, only: %i[show update] do
     member do
       get :tweets, :retweets, :comments, :likes
     end
   end
+  resource :user, only: %i[edit]
 
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end
