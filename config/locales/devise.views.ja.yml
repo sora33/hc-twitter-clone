@@ -43,6 +43,7 @@ ja:
               too_long: "は%{count}文字以下にしてください"
             website:
               too_long: "は%{count}文字以下にしてください"
+              invalid: "は正しいURL形式で入力してください" 
   devise:
     confirmations:
       new:
