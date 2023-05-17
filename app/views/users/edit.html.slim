@@ -1,6 +1,6 @@
 h2 
   = 'プロフィール編集'
-= form_with(model: @user, local: true, html: { class: 'row g-3 pb-4' }) do |form|
+= form_with(model: @user, url: user_path, method: :patch,local: true, html: { class: 'row g-3 pb-4' }) do |form|
   - if @user.errors.any?
     .alert.alert-danger
       p
