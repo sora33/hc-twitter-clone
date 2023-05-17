@@ -1,8 +1,15 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  # devise_for :users, controllers: { sessions: 'users/sessions' }
   root to: 'tweets#index'
+  # ユーザーリソース
+  resource :user_profile, only: %i[edit update], controller: 'users'
+  resources :users, only: %i[show] do
+    member do
+      get :retweets, :comments, :likes
+    end
+  end
+  
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     confirmations: 'users/confirmations',
@@ -15,16 +22,5 @@ Rails.application.routes.draw do
       get :following
     end
   end
-
-  # ユーザーのリソース
-  resources :users, only: %i[show] do
-    member do
-      get :retweets, :comments, :likes
-    end
-  end
-
-  # ユーザー単体のリソース
-  resource :user, only: %i[edit update]
-
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end
