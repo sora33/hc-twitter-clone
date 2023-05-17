@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     confirmations: 'users/confirmations',
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
-  
+
   root to: 'tweets#index'
 
   # ユーザーリソース

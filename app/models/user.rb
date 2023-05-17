@@ -30,7 +30,7 @@ class User < ApplicationRecord
   validates :name, length: { maximum: 20 }
   validates :description, length: { maximum: 200 }
   validates :place, length: { maximum: 50 }
-  validates :website, length: { maximum: 100 }, format: /\A#{URI::regexp(%w(http https))}\z/
+  validates :website, length: { maximum: 100 }, format: /\A#{URI::DEFAULT_PARSER.make_regexp(%w[http https])}\z/
 
   # フロフィール画像
   has_one_attached :profile_image
