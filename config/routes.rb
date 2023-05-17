@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       get :retweets, :comments, :likes
     end
   end
-  
+
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     confirmations: 'users/confirmations',
