@@ -19,7 +19,7 @@
           = tweet.content
         - if tweet.image.attached?
           .mt-3
-            = image_tag tweet.image, class: 'img-fluid'
+            = image_tag tweet.image, width: 240, class: 'img-fluid'
         .d-flex.mt-3
           .me-3
             i.bi.bi-chat
