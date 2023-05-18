@@ -1,0 +1,57 @@
+h2 
+  = 'プロフィール編集'
+= form_with(model: @user, url: user_profile_path, local: true, html: { class: 'row g-3 pb-4' }) do |form|
+  - if @user.errors.any?
+    .alert.alert-danger
+      p
+        = "#{@user.errors.count}つのエラーにより、更新が失敗しました"
+      ul
+        - @user.errors.full_messages.each do |message|
+          li= message
+
+  .col-12
+    = form.label :name, '名前', class: 'form-label'
+    = form.text_field :name, class: 'form-control'
+
+  .col-12
+    = form.label :profile_image, 'プロフィール画像', class: 'form-label'
+    = form.file_field :profile_image, class: 'form-control', onchange: 'loadFile(event, "profile_output")'
+    - if @user.profile_image.attached?
+      = image_tag(@user.profile_image, id: 'profile_output', class: 'img-thumbnail w-25')
+
+  .col-12
+    = form.label :header_image, 'ヘッダー画像', class: 'form-label'
+    = form.file_field :header_image, class: 'form-control', onchange: 'loadFile(event, "header_output")'
+    - if @user.header_image.attached?
+      = image_tag(@user.header_image, id: 'header_output', class: 'img-thumbnail w-25')
+
+  .col-12
+    = form.label :description, '説明', class: 'form-label'
+    = form.text_area :description, class: 'form-control'
+
+  .col-12
+    = form.label :place, '場所', class: 'form-label'
+    = form.text_field :place, class: 'form-control'
+
+  .col-12
+    = form.label :website, 'ウェブサイト', class: 'form-label'
+    = form.text_field :website, class: 'form-control'
+
+  .col-12
+    = form.label :birthday, '誕生日', class: 'form-label'
+    = form.date_field :birthday, class: 'form-control'
+
+  .col-12
+    .d-grid.gap-2.d-md-flex.justify-content-md-end
+      = link_to 'キャンセル', user_path(current_user), class: 'btn btn-secondary'
+      = form.submit '更新', class: 'btn btn-primary me-md-2'
+
+/ 画像を非同期で表示させるロジック
+javascript:
+  function loadFile(event, outputId) {
+    const output = document.getElementById(outputId);
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src)
+    }
+  };

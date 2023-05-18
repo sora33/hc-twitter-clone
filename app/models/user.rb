@@ -15,10 +15,6 @@ class User < ApplicationRecord
   has_many :following, through: :active_relationships, source: :followed
   has_many :followers, through: :passive_relationships, source: :follower
 
-  # フロフィール画像
-  has_one_attached :profile_image
-  has_one_attached :header_image
-
   # ツイートに関するアソシエーション
   has_many :tweets, dependent: :destroy
   has_many :retweets, dependent: :destroy
@@ -28,8 +24,17 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :like_tweets, through: :likes, source: :tweet
 
+  # ユーザーのバリデーション
   validates :tel, presence: true, unless: :from_omniauth?
   validates :birthday, presence: true, unless: :from_omniauth?
+  validates :name, length: { maximum: 20 }
+  validates :description, length: { maximum: 200 }
+  validates :place, length: { maximum: 50 }
+  validates :website, length: { maximum: 100 }, format: /\A#{URI::DEFAULT_PARSER.make_regexp(%w[http https])}\z/
+
+  # フロフィール画像
+  has_one_attached :profile_image
+  has_one_attached :header_image
 
   def self.find_for_github_oauth(auth)
     # GitHubアカウントがあれば返す

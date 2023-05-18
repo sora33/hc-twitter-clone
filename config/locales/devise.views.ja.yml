@@ -9,6 +9,12 @@ ja:
         remember_me: "ログインを記憶"
         tel: "電話番号"
         birthday: "生年月日"
+        name: "名前"
+        description: "自己紹介"
+        place: "場所"
+        website: "ウェブサイト"
+        profile_image: "プロフィール画像"
+        header_image: "ヘッダー画像"
     models:
       user: "ユーザ"
     errors:
@@ -29,6 +35,15 @@ ja:
             password_confirmation:
               blank: "を入力してください"
               confirmation: "が一致しません"
+            name:
+              too_long: "は%{count}文字以下にしてください"
+            description:
+              too_long: "は%{count}文字以下にしてください"
+            place:
+              too_long: "は%{count}文字以下にしてください"
+            website:
+              too_long: "は%{count}文字以下にしてください"
+              invalid: "は正しいURL形式で入力してください" 
   devise:
     confirmations:
       new:

@@ -1,10 +1,25 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[show tweets retweets comments likes]
+  before_action :authenticate_user!
+  before_action :set_user, only: %i[show retweets comments likes]
+  before_action :set_current_user, only: %i[edit update]
 
   def show
     @tweets = @user.ordered_tweets.page(params[:page])
+  end
+
+  def edit
+    @user = current_user
+  end
+
+  def update
+    @user = current_user
+    if current_user.update(user_params)
+      redirect_to current_user, notice: 'プロフィールを変更できました。'
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def retweets
@@ -26,5 +41,13 @@ class UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
+  end
+
+  def set_current_user
+    @user = current_user
+  end
+
+  def user_params
+    params.require(:user).permit(:name, :profile_image, :header_image, :description, :place, :website, :birthday)
   end
 end

@@ -4,8 +4,9 @@
   - else
     = image_tag "https://source.unsplash.com/phIFdC6lA4E/40x40", class: "card-img-top", height: "150"
   .card-body
-    p.text-end
-      = "プロフィールを編集"
+    - if current_user == @user
+      p.text-end
+        = link_to 'プロフィールを編集', edit_user_profile_path
     .d-flex.flex-column
       - if @user.profile_image.attached?
         = image_tag @user.profile_image, class: "rounded-circle", width: "150"
@@ -14,7 +15,7 @@
       h4.card-title.mt-2 = @user.name.present? ? @user.name : "undefined"
       .text-muted = @user.email
       - if @user.description.present?
-        p.card-text = @user.description
+        p.card-text = simple_format(@user.description)
       .d-flex.text-muted.small
         - if @user.place.present?
           span.me-4
@@ -36,9 +37,6 @@
         | フォロー中: 
         b = " #{@user.followers.count} "
         | フォロワー中
-
-
-
 
 / ツイートのタブ
 .nav.nav-pills.mt-3
