@@ -2,7 +2,7 @@
 
 class TweetsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_tweets, only: %i[index create]
+  before_action :set_tweets, only: %i[index]
 
   def index; end
 
@@ -11,6 +11,7 @@ class TweetsController < ApplicationController
     if @tweet.save
       redirect_to root_path
     else
+      set_tweets
       render :index, status: :unprocessable_entity
     end
   end
