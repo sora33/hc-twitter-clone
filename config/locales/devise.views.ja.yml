@@ -15,8 +15,12 @@ ja:
         website: "ウェブサイト"
         profile_image: "プロフィール画像"
         header_image: "ヘッダー画像"
+      tweet:
+        content: "ツイート内容"
+        image: "画像"
     models:
       user: "ユーザ"
+      tweet: "ツイート"
     errors:
       models:
         user:
@@ -44,6 +48,13 @@ ja:
             website:
               too_long: "は%{count}文字以下にしてください"
               invalid: "は正しいURL形式で入力してください" 
+        tweet:  # 新たに追加
+          attributes:
+            content:
+              blank: "を入力してください"
+              too_long: "は%{count}文字以下にしてください"
+            image:
+              invalid: "は正しい画像形式で選択してください" 
   devise:
     confirmations:
       new:

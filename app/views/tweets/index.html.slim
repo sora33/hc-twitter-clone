@@ -15,7 +15,14 @@ nav.nav-pills
       = link_to user_path(current_user) do
         = image_tag 'https://source.unsplash.com/phIFdC6lA4E/40x40', width: 40, height: 40, class: "rounded-circle"
   / ツイート投稿フォーム
-  = form_with model: @tweet, local: true, class: "flex-fill" do |f|
+  = form_with model: @tweet || Tweet.new, local: true, class: "flex-fill" do |f|
+    - if @tweet&.errors&.any?
+      .alert.alert-danger
+        p
+          = "#{@tweet.errors.count}つのエラーにより、更新が失敗しました"
+        ul
+          - @tweet.errors.full_messages.each do |message|
+            li= message
     .form-group
       = f.text_area :content, class: "form-control mb-2", placeholder: "いまどうしてる？"
       .d-flex.align-items-center.justify-content-between.mt-3

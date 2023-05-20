@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   end
 
   # tweets リソース
-  resources :tweets, only: [:index] do
+  resources :tweets, only: %i[index create] do
     collection do
       get :following
     end
