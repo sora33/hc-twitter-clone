@@ -1,6 +1,4 @@
-- if tweets.nil? || tweets.empty?
-  p 該当のツイートはございません
-- else
+- unless tweets.nil? || tweets.empty?
   - tweets.each do |tweet|
     = render 'tweets/tweet', tweet: tweet
 
