@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: %i[show retweets comments likes]
+  before_action :set_user, only: %i[show retweets replies likes]
   before_action :set_current_user, only: %i[edit update]
 
   def show
@@ -16,7 +16,7 @@ class UsersController < ApplicationController
   def update
     @user = current_user
     if current_user.update(user_params)
-      redirect_to current_user, notice: 'プロフィールを変更できました。'
+      redirect_to current_user, flash: { success: 'プロフィールを変更できました' }
     else
       render :edit, status: :unprocessable_entity
     end
@@ -27,8 +27,8 @@ class UsersController < ApplicationController
     render :show
   end
 
-  def comments
-    @tweets = @user.ordered_comments.page(params[:page])
+  def replies
+    @tweets = @user.ordered_replies.page(params[:page])
     render :show
   end
 
