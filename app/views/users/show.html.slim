@@ -42,10 +42,10 @@
 .nav.nav-pills.mt-3
   = link_to "ツイート", user_path(@user), class: "nav-link #{'active' if current_page?(user_path(@user))}"
   = link_to "リツイート", retweets_user_path(@user), class: "nav-link #{'active' if current_page?(retweets_user_path(@user))}"
-  = link_to "コメント", comments_user_path(@user), class: "nav-link #{'active' if current_page?(comments_user_path(@user))}"
+  = link_to "コメント", replies_user_path(@user), class: "nav-link #{'active' if current_page?(replies_user_path(@user))}"
   = link_to "いいね", likes_user_path(@user), class: "nav-link #{'active' if current_page?(likes_user_path(@user))}"
 
 / ツイートの一覧
 .tab-content.list-group
   #tweets.tab-pane.fade.show.active
-    = render 'tweets/tweet', tweets: @tweets.presence
+    = render 'tweets/tweets', tweets: @tweets.presence

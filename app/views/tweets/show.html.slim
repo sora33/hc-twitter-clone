@@ -1,9 +1,6 @@
-nav.nav-pills
-  ul.nav.border-gray.border-bottom.text-center
-    li.nav-item.col-6 class="#{current_page?(root_path) ? 'fw-bold text-muted' : ''}"
-      = link_to 'おすすめ', root_path, class: 'nav-link link-dark border-gray border-end'
-    li.nav-item.col-6 class="#{current_page?(following_tweets_path) ? 'fw-bold text-muted' : ''}"
-      = link_to 'フォロー中', following_tweets_path, class: 'nav-link link-dark'
+= render 'tweets/tweet', tweet: @tweet
+
+/ コメント投稿フォーム
 
 .d-flex.mt-3
   / アバター
@@ -14,8 +11,7 @@ nav.nav-pills
     - else
       = link_to user_path(current_user) do
         = image_tag 'https://source.unsplash.com/phIFdC6lA4E/40x40', width: 40, height: 40, class: "rounded-circle"
-  / ツイート投稿フォーム
-  = form_with model: @tweet || Tweet.new, local: true, class: "flex-fill" do |f|
+  = form_with model: Tweet.new, url: tweet_replies_path(@tweet), local: true, class: "mt-3 flex-fill" do |f|
     - if @tweet&.errors&.any?
       .alert.alert-danger
         p
@@ -24,14 +20,14 @@ nav.nav-pills
           - @tweet.errors.full_messages.each do |message|
             li= message
     .form-group
-      = f.text_area :content, class: "form-control mb-2", placeholder: "いまどうしてる？"
+      = f.text_area :content, class: "form-control mb-2", placeholder: "返信をツイート"
       .d-flex.align-items-center.justify-content-between.mt-3
         .d-flex.align-items-center
           = f.file_field :image, id: 'file-input', class: "file-input"
           label.file-label for="file-input"
             i.bi.bi-image.text-primary class="mr-1" style="font-size: 1.5em;"
-        = f.submit "ツイートする", class: "btn btn-primary"
+        = f.submit "返信", class: "btn btn-primary"
 
-/ ツイートの一覧
+/ コメント一覧
 div.list-group.mt-3
-  = render 'tweets/tweets', tweets: @tweets
+  = render 'tweets/tweets', tweets:  @replies

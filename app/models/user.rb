@@ -17,10 +17,9 @@ class User < ApplicationRecord
 
   # ツイートに関するアソシエーション
   has_many :tweets, dependent: :destroy
+  has_many :replies, class_name: 'Tweet', foreign_key: 'parent_id', dependent: :destroy, inverse_of: :parent
   has_many :retweets, dependent: :destroy
   has_many :retweet_tweets, through: :retweets, source: :tweet
-  has_many :comments, dependent: :destroy
-  has_many :comment_tweets, through: :comments, source: :tweet
   has_many :likes, dependent: :destroy
   has_many :like_tweets, through: :likes, source: :tweet
 
@@ -74,23 +73,23 @@ class User < ApplicationRecord
 
   # ツイートに関するメソッド
   def following_tweets
-    Tweet.where(user_id: following.ids)
+    Tweet.where(user_id: following.ids, parent_id: nil).order(created_at: :desc)
   end
 
   def all_tweets
-    Tweet.all.order(created_at: :desc)
+    Tweet.where(parent_id: nil).order(created_at: :desc)
   end
 
   def ordered_tweets
-    tweets.order(created_at: :desc)
+    tweets.where(parent_id: nil).order(created_at: :desc)
   end
 
   def ordered_retweets
     retweet_tweets.order(created_at: :desc)
   end
 
-  def ordered_comments
-    comment_tweets.order(created_at: :desc)
+  def ordered_replies
+    tweets.where.not(parent_id: nil).order(created_at: :desc)
   end
 
   def ordered_likes

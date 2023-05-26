@@ -1,35 +1,30 @@
-- tweets.each do |tweet|
-  div.list-group-item.border-bottom
-    .d-flex.mt-2
-      / アバター
-      .me-3
-        - if tweet.user.profile_image.attached?
-          = link_to user_path(tweet.user) do
-            = image_tag tweet.user.profile_image, width: 40, height: 40, class: "rounded-circle"
-        - else
-          = link_to user_path(tweet.user) do
-            = image_tag 'https://source.unsplash.com/phIFdC6lA4E/40x40', width: 40, height: 40, class: "rounded-circle"
-      / ツイート投稿内容
-      div
-        strong.mb-0.me-3
-          = tweet.user.name.present? ? tweet.user.name : "undefined"
-        small.text-muted
-          = tweet.created_at.strftime('%Y/%m/%d %H:%M')
-        p
-          = tweet.content
-        - if tweet.image.attached?
-          .mt-3
-            = image_tag tweet.image, width: 240, class: 'img-fluid'
-        .d-flex.mt-3
-          .me-3
-            i.bi.bi-chat
-          .me-3
-            i.bi.bi-arrow-repeat
-          .me-3
-            i.bi.bi-heart
-          .me-3
-            i.bi.bi-bookmark
-/ ページネーション
-nav.mt-3
-  = paginate @tweets, theme: 'bootstrap-5'
-
+div.list-group-item.border-bottom
+  .d-flex.mt-2
+    / アバター
+    .me-3
+      - if tweet.user.profile_image.attached?
+        = link_to user_path(tweet.user) do
+          = image_tag tweet.user.profile_image, width: 40, height: 40, class: "rounded-circle"
+      - else
+        = link_to user_path(tweet.user) do
+          = image_tag 'https://source.unsplash.com/phIFdC6lA4E/40x40', width: 40, height: 40, class: "rounded-circle"
+    / ツイート投稿内容
+    = link_to tweet_path(tweet), class: "text-dark text-decoration-none" do
+      strong.mb-0.me-3
+        = tweet.user.name.present? ? tweet.user.name : "undefined"
+      small.text-muted
+        = tweet.created_at.strftime('%Y/%m/%d %H:%M')
+      p
+        = tweet.content
+      - if tweet.image.attached?
+        .mt-3
+          = image_tag tweet.image, width: 240, class: 'img-fluid'
+      .d-flex.mt-3
+        .me-3
+          i.bi.bi-chat
+        .me-3
+          i.bi.bi-arrow-repeat
+        .me-3
+          i.bi.bi-heart
+        .me-3
+          i.bi.bi-bookmark

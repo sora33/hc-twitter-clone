@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_user, only: %i[show retweets comments likes]
+  before_action :set_user, only: %i[show retweets replies likes]
   before_action :set_current_user, only: %i[edit update]
 
   def show
@@ -27,8 +27,8 @@ class UsersController < ApplicationController
     render :show
   end
 
-  def comments
-    @tweets = @user.ordered_comments.page(params[:page])
+  def replies
+    @tweets = @user.ordered_replies.page(params[:page])
     render :show
   end
 
