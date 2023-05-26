@@ -4,7 +4,7 @@ nav.navbar.navbar-expand-sm.navbar-light.border-gray.border-bottom
       = image_tag 'logo.png', class: 'navbar-brand-logo', style:"width: 1rem; margin-right: 1rem"
       span = 'Twitterクローン'
     - flash.each do |key, value|
-      span class="alert alert-#{key} p-0 m-0 ms-4"
+      span class="alert alert-#{key} p-1 m-0 ms-4"
         = value
     button.navbar-toggler type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
       span.navbar-toggler-icon
