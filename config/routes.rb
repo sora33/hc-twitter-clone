@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       get :following
     end
     resources :replies, only: [:create]
+    resource :likes, only: %i[create destroy]
   end
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end
