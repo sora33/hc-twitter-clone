@@ -6,7 +6,7 @@ class RepliesController < ApplicationController
     @reply = @tweet.replies.build(reply_params)
     @reply.user = current_user
     if @reply.save
-      redirect_to tweet_path(@tweet), flash: {success: '返信できました'}
+      redirect_to tweet_path(@tweet), flash: { success: '返信できました' }
     else
       @replies = @tweet.replies.page(params[:page])
       render 'tweets/show', status: :unprocessable_entity
