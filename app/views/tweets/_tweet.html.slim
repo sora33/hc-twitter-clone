@@ -19,12 +19,21 @@ div.list-group-item.border-bottom
       - if tweet.image.attached?
         .mt-3
           = image_tag tweet.image, width: 240, class: 'img-fluid'
-      .d-flex.mt-3
-        .me-3
-          i.bi.bi-chat
-        .me-3
-          i.bi.bi-arrow-repeat
-        .me-3
+  .d-flex.mt-3.ms-5
+    .me-5
+      i.bi.bi-chat
+    .me-5
+      i.bi.bi-arrow-repeat
+    .me-5
+      - if tweet.likes.find_by(user_id: current_user.id)
+        = link_to tweet_likes_path(tweet_id: tweet.id), data: { turbo_method: :delete }, class: 'me-2', style: "color: rgb(249, 24, 128);"  do
+          i.bi.bi-heart-fill
+        span
+          = tweet.likes.count
+      - else
+        = link_to tweet_likes_path(tweet_id: tweet.id), data: { turbo_method: :post }, class: 'me-2', style: "color: rgb(249, 24, 128);"  do
           i.bi.bi-heart
-        .me-3
-          i.bi.bi-bookmark
+        span
+          = tweet.likes.count
+    .me-5
+      i.bi.bi-bookmark

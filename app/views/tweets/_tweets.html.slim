@@ -1,7 +1,7 @@
-- tweets.each do |tweet|
-  = render 'tweets/tweet', tweet: tweet
+- unless tweets.nil? || tweets.empty?
+  - tweets.each do |tweet|
+    = render 'tweets/tweet', tweet: tweet
 
-/ ページネーション
-nav.mt-3
-  = paginate tweets, theme: 'bootstrap-5'
-
+  / ページネーション
+  nav.mt-3
+    = paginate tweets, theme: 'bootstrap-5'
