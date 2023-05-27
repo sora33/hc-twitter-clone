@@ -19,16 +19,29 @@ div.list-group-item.border-bottom
       - if tweet.image.attached?
         .mt-3
           = image_tag tweet.image, width: 240, class: 'img-fluid'
+  / ツイートの操作（リツイート、いいね、コメント）
   .d-flex.mt-3.ms-5
     .me-5
-      i.bi.bi-chat
+      = link_to tweet_path(tweet), class: 'me-2', style: "color: inherit;"  do
+        i.bi.bi-chat
+      span
+        = tweet.replies.count
     .me-5
-      i.bi.bi-arrow-repeat
+      - if tweet.retweets.find_by(user_id: current_user.id)
+        = link_to tweet_retweets_path(tweet_id: tweet.id), data: { turbo_method: :delete }, class: 'me-2', style: "color: green;" do
+          i.bi.bi-arrow-repeat
+        span style="color: green;"
+          = tweet.retweets.count
+      - else
+        = link_to tweet_retweets_path(tweet_id: tweet.id), data: { turbo_method: :post }, class: 'me-2', style: "color: inherit;" do
+          i.bi.bi-arrow-repeat
+        span
+          = tweet.retweets.count
     .me-5
       - if tweet.likes.find_by(user_id: current_user.id)
         = link_to tweet_likes_path(tweet_id: tweet.id), data: { turbo_method: :delete }, class: 'me-2', style: "color: rgb(249, 24, 128);"  do
           i.bi.bi-heart-fill
-        span
+        span style="color: rgb(249, 24, 128);"
           = tweet.likes.count
       - else
         = link_to tweet_likes_path(tweet_id: tweet.id), data: { turbo_method: :post }, class: 'me-2', style: "color: rgb(249, 24, 128);"  do
