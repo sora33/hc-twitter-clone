@@ -14,8 +14,8 @@ class RetweetsController < ApplicationController
   end
 
   def destroy
-    @retweet = Retweet.find_by(tweet_id: params[:tweet_id], user_id: current_user.id)
-    if @retweet&.destroy
+    @retweet = current_user.retweets.find_by!(tweet_id: params[:tweet_id])
+    if @retweet.destroy
       flash[:success] = 'リツイートを取り消しました'
     else
       flash[:error] = 'リツイートの取り消しに失敗しました'

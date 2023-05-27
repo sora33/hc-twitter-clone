@@ -14,8 +14,8 @@ class LikesController < ApplicationController
   end
 
   def destroy
-    @like = Like.find_by(tweet_id: params[:tweet_id], user_id: current_user.id)
-    if @like&.destroy
+    @like = current_user.likes.find_by!(tweet_id: params[:tweet_id])
+    if @like.destroy
       flash[:success] = 'いいねを取り消しました'
     else
       flash[:error] = 'いいねの取り消しに失敗しました'
