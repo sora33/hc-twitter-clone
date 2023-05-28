@@ -3,7 +3,7 @@ ul.list-unstyled.fs-5
   = render partial: 'layouts/sidebar_link', locals: {path: user_registration_path, icon: 'bi-search', text: '話題を検索'}
   = render partial: 'layouts/sidebar_link', locals: {path: user_registration_path, icon: 'bi-bell', text: '通知'}
   = render partial: 'layouts/sidebar_link', locals: {path: user_registration_path, icon: 'bi-envelope', text: 'メッセージ'}
-  = render partial: 'layouts/sidebar_link', locals: {path: user_registration_path, icon: 'bi-bookmark', text: 'ブックマーク'}
+  = render partial: 'layouts/sidebar_link', locals: {path: bookmarks_path, icon: 'bi-bookmark', text: 'ブックマーク'}
   = render partial: 'layouts/sidebar_link', locals: {path: user_registration_path, icon: 'bi-gem', text: 'Twitter Blue'}
   = render partial: 'layouts/sidebar_link', locals: {path: user_path(current_user), icon: 'bi-person', text: 'プロフィール'}
   = render partial: 'layouts/sidebar_link', locals: {path: user_registration_path, icon: 'bi-three-dots', text: 'もっと見る'}

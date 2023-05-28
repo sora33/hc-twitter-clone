@@ -26,6 +26,9 @@ Rails.application.routes.draw do
     resources :replies, only: [:create]
     resource :likes, only: %i[create destroy]
     resource :retweets, only: %i[create destroy]
+    resource :bookmarks, only: %i[create destroy]
   end
+  # bookmarks リソース
+  resources :bookmarks, only: [:index]
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end
