@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     member do
       get :retweets, :replies, :likes
     end
+    resource :relationships, only: %i[create destroy]
   end
 
   # tweets リソース

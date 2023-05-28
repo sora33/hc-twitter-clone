@@ -19,6 +19,17 @@ div.list-group-item.border-bottom
       - if tweet.image.attached?
         .mt-3
           = image_tag tweet.image, width: 240, class: 'img-fluid'
+    - unless tweet.user == current_user
+      .dropend.ms-auto
+        i.bi.bi-three-dots.text-dark type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"
+        ul.dropdown-menu aria-labelledby="dropdownMenuButton1" style="padding: 10px;"
+          li
+            = link_to user_relationships_path(user_id: tweet.user), class: "dropdown-item", data: { turbo_method: current_user.following?(tweet.user) ? :delete : :post } do
+              | #{tweet.user.name}さんを #{current_user.following?(tweet.user) ? 'フォロー解除' : 'フォロー'}
+          li
+            .dropdown-item style="cursor: pointer;"
+              | 閉じる
+
   / ツイートの操作（リツイート、いいね、コメント）
   .d-flex.mt-3.ms-5
     .me-5

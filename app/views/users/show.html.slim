@@ -12,7 +12,12 @@
         = image_tag @user.profile_image, class: "rounded-circle", width: "150"
       - else
         = image_tag "https://source.unsplash.com/phIFdC6lA4E/40x40", class: "rounded-circle", width: "150"
-      h4.card-title.mt-2 = @user.name.present? ? @user.name : "undefined"
+      .d-flex.justify-content-between
+        h4.card-title.mt-2 = @user.name.present? ? @user.name : "undefined"
+        - unless @user == current_user
+          = button_to user_relationships_path(user_id: @user), class: "btn #{current_user.following?(@user) ?  "btn-outline-dark" : "btn-dark"}", method: current_user.following?(@user) ? :delete : :post  do
+            | #{current_user.following?(@user) ? 'フォロー中' : 'フォロー'}
+
       .text-muted = @user.email
       - if @user.description.present?
         p.card-text = simple_format(@user.description)
