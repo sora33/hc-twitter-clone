@@ -60,4 +60,9 @@ div.list-group-item.border-bottom
         span
           = tweet.likes.count
     .me-5
-      i.bi.bi-bookmark
+      - if tweet.bookmarks.find_by(user_id: current_user.id)
+        = link_to tweet_bookmarks_path(tweet_id: tweet.id), data: { turbo_method: :delete }, class: 'me-2' do
+          i.bi.bi-bookmark-fill
+      - else
+        = link_to tweet_bookmarks_path(tweet_id: tweet.id), data: { turbo_method: :post }, class: 'me-2' do
+          i.bi.bi-bookmark
