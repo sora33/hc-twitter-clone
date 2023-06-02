@@ -1,0 +1,17 @@
+
+- conversations.each do |conversation|
+  div.list-group-item.border-bottom
+    - other_user = conversation.other_user(current_user)
+    - last_message = conversation.last_message
+    .d-flex.mt-2
+      .me-3
+        = link_to user_path(other_user) do
+          = image_tag other_user.display_image, width: 40, height: 40, class: "rounded-circle"
+      .me-3
+        = link_to conversation_path(conversation), class: 'text-dark text-decoration-none' do
+          strong.mb-0.me-3
+            = other_user.name
+          small.text-muted
+            | #{last_message&.created_at&.strftime('%Y/%m/%d %H:%M')}
+          p
+            | #{last_message&.body}

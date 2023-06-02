@@ -4,10 +4,7 @@ class BookmarksController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @bookmarks = Tweet.joins(:bookmarks)
-                      .where(bookmarks: { user_id: current_user.id })
-                      .order('bookmarks.created_at DESC')
-                      .page(params[:page])
+    @bookmarks = current_user.bookmarked_tweets.page(params[:page])
   end
 
   def create

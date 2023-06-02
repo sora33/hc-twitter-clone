@@ -23,7 +23,20 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :like_tweets, through: :likes, source: :tweet
   has_many :bookmarks, dependent: :destroy
-  has_many :bookmarked_tweets, through: :bookmarks, source: :tweet
+  # 中間テーブルのbookmarksを経由して、tweetテーブルを参照する。中間テーブルであるbookmarksのcreated_atを降順に並べ替える。
+  has_many :bookmarked_tweets, -> { order('bookmarks.created_at DESC') }, through: :bookmarks, source: :tweet
+
+  # ユーザーが送信者となっている会話
+
+  has_many :conversations_as_sender, foreign_key: :sender_id, class_name: 'Conversation', dependent: :destroy,
+                                     inverse_of: :sender
+  # ユーザーが受信者となっている会話
+  has_many :conversations_as_recipient, foreign_key: :recipient_id, class_name: 'Conversation', dependent: :destroy,
+                                        inverse_of: :recipient
+  # ユーザーが関わる全ての会話（送信者・受信者とも）
+  def conversations
+    Conversation.where(sender_id: id).or(Conversation.where(recipient_id: id))
+  end
 
   # ユーザーのバリデーション
   validates :tel, presence: true, unless: :from_omniauth?
@@ -36,6 +49,14 @@ class User < ApplicationRecord
   # フロフィール画像
   has_one_attached :profile_image
   has_one_attached :header_image
+
+  def display_image
+    if profile_image.attached?
+      profile_image
+    else
+      'https://source.unsplash.com/phIFdC6lA4E/40x40'
+    end
+  end
 
   def self.find_for_github_oauth(auth)
     # GitHubアカウントがあれば返す

@@ -1,0 +1,12 @@
+
+  .row
+    .col-6.border-gray.border-end
+      = render 'conversations/conversations', conversations: @conversations
+    .col-6.py-4
+      - @conversation.messages.each do |message|
+        p class="w-75 #{message.user == current_user ? 'ms-auto text-light bg-primary' : 'bg-light'} p-2 rounded mb-2"
+          = message.body
+      = form_with model: [@conversation, @message], local: true do |form|
+        = form.label :body, "メッセージ送信"
+        = form.text_area :body, class: 'form-control'
+        = form.submit '送信', class: 'btn btn-primary mt-2 ms-auto d-block'

@@ -2,12 +2,8 @@ div.list-group-item.border-bottom
   .d-flex.mt-2
     / アバター
     .me-3
-      - if tweet.user.profile_image.attached?
-        = link_to user_path(tweet.user) do
-          = image_tag tweet.user.profile_image, width: 40, height: 40, class: "rounded-circle"
-      - else
-        = link_to user_path(tweet.user) do
-          = image_tag 'https://source.unsplash.com/phIFdC6lA4E/40x40', width: 40, height: 40, class: "rounded-circle"
+      = link_to user_path(tweet.user) do
+        = image_tag tweet.user.display_image, width: 40, height: 40, class: "rounded-circle"
     / ツイート投稿内容
     = link_to tweet_path(tweet), class: "text-dark text-decoration-none" do
       strong.mb-0.me-3

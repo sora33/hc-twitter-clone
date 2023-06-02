@@ -30,5 +30,11 @@ Rails.application.routes.draw do
   end
   # bookmarks リソース
   resources :bookmarks, only: [:index]
+
+  # メッセージ機能
+  resources :conversations do
+    resources :messages
+  end
+
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
 end
