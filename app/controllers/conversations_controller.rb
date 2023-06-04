@@ -3,14 +3,12 @@
 class ConversationsController < ApplicationController
   before_action :find_user, only: :create
   before_action :find_or_create_conversation, only: :create
+  before_action :set_conversations, only: %i[index show]
 
-  def index
-    @conversations = current_user.conversations
-  end
+  def index; end
 
   def show
-    @conversations = current_user.conversations
-    @conversation = Conversation.find(params[:id])
+    @conversation = @conversations.find(params[:id])
     @message = Message.new
   end
 
@@ -26,6 +24,10 @@ class ConversationsController < ApplicationController
 
   def find_user
     @user = User.find(params[:user_id])
+  end
+
+  def set_conversations
+    @conversations = current_user.conversations.order(created_at: :desc)
   end
 
   def find_or_create_conversation
