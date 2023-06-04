@@ -19,7 +19,7 @@ class MessagesController < ApplicationController
   private
 
   def find_conversation
-    @conversation = Conversation.find(params[:conversation_id])
+    @conversation = current_user.conversations.find(params[:conversation_id])
   end
 
   def message_params
