@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ConversationsController < ApplicationController
-  before_action :find_user, only: :create
-  before_action :find_or_create_conversation, only: :create
   before_action :set_conversations, only: %i[index show]
 
   def index; end
@@ -13,8 +11,10 @@ class ConversationsController < ApplicationController
   end
 
   def create
-    if @find_or_create_conversation.save
-      redirect_to conversation_path(@find_or_create_conversation), flash: { success: 'DMを送信できます' }
+    @user = User.find(params[:user_id])
+    conversation = find_or_create_conversation(@user)
+    if conversation.save!
+      redirect_to conversation_path(conversation), flash: { success: 'DMを送信できます' }
     else
       redirect_to user_path(@user), status: :unprocessable_entity, flash: { success: 'エラーになりました。' }
     end
@@ -22,16 +22,13 @@ class ConversationsController < ApplicationController
 
   private
 
-  def find_user
-    @user = User.find(params[:user_id])
-  end
-
   def set_conversations
     @conversations = current_user.conversations.order(created_at: :desc)
   end
 
-  def find_or_create_conversation
-    @find_or_create_conversation = Conversation.between(current_user.id, @user.id).first
-    @find_or_create_conversation ||= Conversation.new(sender_id: current_user.id, recipient_id: @user.id)
+  # 会話が存在するか確認し、なければ作成する
+  def find_or_create_conversation(user)
+    Conversation.between(current_user.id, user.id).first ||
+      Conversation.find_or_create_by(sender_id: current_user.id, recipient_id: user.id)
   end
 end
