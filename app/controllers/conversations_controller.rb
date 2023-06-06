@@ -12,11 +12,11 @@ class ConversationsController < ApplicationController
 
   def create
     @user = User.find(params[:user_id])
-    conversation = find_or_create_conversation(@user)
+    conversation = current_user.find_or_create_conversation_with(@user)
     if conversation.save!
       redirect_to conversation_path(conversation), flash: { success: 'DMを送信できます' }
     else
-      redirect_to user_path(@user), status: :unprocessable_entity, flash: { success: 'エラーになりました。' }
+      redirect_to user_path(user), status: :unprocessable_entity, flash: { success: 'エラーになりました。' }
     end
   end
 
@@ -24,11 +24,5 @@ class ConversationsController < ApplicationController
 
   def set_conversations
     @conversations = current_user.conversations.order(created_at: :desc)
-  end
-
-  # 会話が存在するか確認し、なければ作成する
-  def find_or_create_conversation(user)
-    Conversation.between(current_user.id, user.id).first ||
-      Conversation.find_or_create_by(sender_id: current_user.id, recipient_id: user.id)
   end
 end

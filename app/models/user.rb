@@ -33,10 +33,6 @@ class User < ApplicationRecord
   # ユーザーが受信者となっている会話
   has_many :conversations_as_recipient, foreign_key: :recipient_id, class_name: 'Conversation', dependent: :destroy,
                                         inverse_of: :recipient
-  # ユーザーが関わる全ての会話（送信者・受信者とも）
-  def conversations
-    Conversation.where(sender_id: id).or(Conversation.where(recipient_id: id))
-  end
 
   # ユーザーのバリデーション
   validates :tel, presence: true, unless: :from_omniauth?
@@ -130,5 +126,15 @@ class User < ApplicationRecord
 
   def following?(other_user)
     following.include?(other_user)
+  end
+
+  # DMに関するメソッド
+  def conversations
+    Conversation.where(sender_id: id).or(Conversation.where(recipient_id: id))
+  end
+
+  def find_or_create_conversation_with(other_user)
+    Conversation.between(id, other_user.id).first ||
+      Conversation.find_or_create_by(sender_id: id, recipient_id: other_user.id)
   end
 end
