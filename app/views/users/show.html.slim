@@ -15,8 +15,11 @@
       .d-flex.justify-content-between
         h4.card-title.mt-2 = @user.name.present? ? @user.name : "undefined"
         - unless @user == current_user
-          = button_to user_relationships_path(user_id: @user), class: "btn #{current_user.following?(@user) ?  "btn-outline-dark" : "btn-dark"}", method: current_user.following?(@user) ? :delete : :post  do
-            | #{current_user.following?(@user) ? 'フォロー中' : 'フォロー'}
+          .d-flex
+            = button_to conversations_path(user_id: @user.id), method: :post, class: 'btn btn-primary me-2' do
+              i.bi.bi-envelope-fill
+            = button_to user_relationships_path(user_id: @user), class: "btn #{current_user.following?(@user) ?  "btn-outline-dark" : "btn-dark"}", method: current_user.following?(@user) ? :delete : :post  do
+              | #{current_user.following?(@user) ? 'フォロー中' : 'フォロー'}
 
       .text-muted = @user.email
       - if @user.description.present?

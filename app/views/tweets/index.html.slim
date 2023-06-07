@@ -8,12 +8,8 @@ nav.nav-pills
 .d-flex.mt-3
   / アバター
   .me-3
-    - if current_user.profile_image.present?
-      = link_to user_path(current_user) do
-        = image_tag current_user.profile_image.url, width: 40, height: 40, class: "rounded-circle"
-    - else
-      = link_to user_path(current_user) do
-        = image_tag 'https://source.unsplash.com/phIFdC6lA4E/40x40', width: 40, height: 40, class: "rounded-circle"
+    = link_to user_path(current_user) do
+      = image_tag current_user.display_image, width: 40, height: 40, class: "rounded-circle"
   / ツイート投稿フォーム
   = form_with model: @tweet || Tweet.new, local: true, class: "flex-fill" do |f|
     - if @tweet&.errors&.any?

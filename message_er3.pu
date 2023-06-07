@@ -1,0 +1,20 @@
+@startuml
+
+title  ③twitter課題のDM機能のERD
+
+class users {
+    - id
+    + name
+    ///////省略///////
+}
+
+class dm_messages {
+    - id
+    + sender, user_id
+    + receiver, user_id
+    + message
+}
+
+users "1" -- "n" dm_messages
+
+@endumlcopy
