@@ -7,6 +7,7 @@ class LikesController < ApplicationController
     @like = current_user.likes.build(tweet_id: params[:tweet_id])
     if @like.save
       flash[:success] = 'いいねできました'
+      current_user.create_notification(@like.tweet, 'like')
     else
       flash[:error] = 'いいねに失敗しました'
     end

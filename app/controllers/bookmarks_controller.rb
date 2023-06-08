@@ -11,6 +11,7 @@ class BookmarksController < ApplicationController
     @bookmark = current_user.bookmarks.build(tweet_id: params[:tweet_id])
     if @bookmark.save
       flash[:success] = 'ブックマークできました'
+      current_user.create_notification(@bookmark.tweet, 'bookmark')
     else
       flash[:error] = 'ブックマークに失敗しました'
     end

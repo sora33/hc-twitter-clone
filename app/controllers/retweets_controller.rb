@@ -7,6 +7,7 @@ class RetweetsController < ApplicationController
     @retweet = current_user.retweets.build(tweet_id: params[:tweet_id])
     if @retweet.save
       flash[:success] = 'リツイートできました'
+      current_user.create_notification(@retweet.tweet, 'retweet')
     else
       flash[:error] = 'リツイートに失敗しました'
     end

@@ -11,7 +11,7 @@ div.list-group-item.border-bottom
       small.text-muted
         = tweet.created_at.strftime('%Y/%m/%d %H:%M')
       p
-        = tweet.content
+        = simple_format sanitize(tweet.content)
       - if tweet.image.attached?
         .mt-3
           = image_tag tweet.image, width: 240, class: 'img-fluid'
