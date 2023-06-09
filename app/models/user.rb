@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  include TweetsConcern
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable,
          :omniauthable, omniauth_providers: [:github]
@@ -27,12 +27,16 @@ class User < ApplicationRecord
   has_many :bookmarked_tweets, -> { order('bookmarks.created_at DESC') }, through: :bookmarks, source: :tweet
 
   # ユーザーが送信者となっている会話
-
   has_many :conversations_as_sender, foreign_key: :sender_id, class_name: 'Conversation', dependent: :destroy,
                                      inverse_of: :sender
   # ユーザーが受信者となっている会話
   has_many :conversations_as_recipient, foreign_key: :recipient_id, class_name: 'Conversation', dependent: :destroy,
                                         inverse_of: :recipient
+  # 通知に関するアソシエーション
+  has_many :active_notifications, class_name: 'Notification', foreign_key: 'action_user_id', dependent: :destroy,
+                                  inverse_of: 'action_user'
+  has_many :passive_notifications, class_name: 'Notification', foreign_key: 'passive_user_id', dependent: :destroy,
+                                   inverse_of: 'passive_user'
 
   # ユーザーのバリデーション
   validates :tel, presence: true, unless: :from_omniauth?
@@ -90,31 +94,6 @@ class User < ApplicationRecord
     provider.present? && uid.present?
   end
 
-  # ツイートに関するメソッド
-  def following_tweets
-    Tweet.where(user_id: following.ids, parent_id: nil).order(created_at: :desc)
-  end
-
-  def all_tweets
-    Tweet.where(parent_id: nil).order(created_at: :desc)
-  end
-
-  def ordered_tweets
-    tweets.where(parent_id: nil).order(created_at: :desc)
-  end
-
-  def ordered_retweets
-    retweet_tweets.order(created_at: :desc)
-  end
-
-  def ordered_replies
-    tweets.where.not(parent_id: nil).order(created_at: :desc)
-  end
-
-  def ordered_likes
-    like_tweets.order(created_at: :desc)
-  end
-
   # フォローに関するメソッド
   def follow(other_user)
     following << other_user
@@ -136,5 +115,20 @@ class User < ApplicationRecord
   def find_or_create_conversation_with(other_user)
     Conversation.between(id, other_user.id).first ||
       Conversation.find_or_create_by(sender_id: id, recipient_id: other_user.id)
+  end
+
+  # 通知に関するメソッド（ツイートに関する）
+  def create_notification(tweet, action)
+    return if id == tweet.user_id
+
+    notification = active_notifications.new(
+      tweet_id: tweet.id,
+      passive_user_id: tweet.user_id,
+      action: action
+    )
+    # バリデーション通れば、保存して通知メール送信
+    return unless notification.save
+
+    NotificationMailer.notification_email(tweet.user).deliver_later
   end
 end

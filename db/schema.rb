@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_02_132701) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_07_162200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -74,6 +74,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_02_132701) do
     t.integer "user_id"
     t.integer "conversation_id"
     t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.integer "action_user_id", null: false
+    t.integer "passive_user_id", null: false
+    t.integer "tweet_id"
+    t.string "action", default: "", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

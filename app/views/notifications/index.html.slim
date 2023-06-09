@@ -1,0 +1,29 @@
+- @notifications.each do |notification|
+  div.list-group-item.border-bottom
+    - action_user = notification.action_user
+    - tweet = notification.tweet
+    .d-flex.mt-2
+      .me-3
+        - if notification.action == "like" 
+          i.bi.bi-heart-fill.display-6 style= "color: rgb(249 24, 128);"
+        - if notification.action == "retweet" 
+          i.bi.bi-arrow-repeat.display-6 style= "color: green;"
+        - if notification.action == "bookmark"
+          i.bi.bi-bookmark-fill.text-primary.display-6
+        - if notification.action == "reply"
+          i.bi.bi-chat.text-warning.display-6
+      .me-3
+        = link_to user_path(action_user) do
+          = image_tag action_user.display_image, width: 40, height: 40, class: "rounded-circle"
+        p.mb-0.me-3
+        - if notification.action == "like" 
+          = "<strong>#{action_user.name}</strong>さんが あなたのツイートをいいねしました".html_safe
+        - if notification.action == "retweet" 
+          = "<strong>#{action_user.name}</strong>さんが あなたのツイートをリツイートしました".html_safe
+        - if notification.action == "bookmark" 
+          = "<strong>#{action_user.name}</strong>さんが あなたのツイートをブックマークしました".html_safe
+        - if notification.action == "reply" 
+          = "<strong>#{action_user.name}</strong>さんが あなたのツイートをコメントしました".html_safe
+        = link_to tweet_path(tweet), class: "text-dark text-decoration-none" do
+          .mb-0.me-3.text-muted.small
+            = simple_format sanitize(tweet.content)
