@@ -13,8 +13,9 @@ nav.navbar.navbar-expand-sm.navbar-light.border-gray.border-bottom
         - if user_signed_in?
           li.nav-item
             = button_to 'ログアウト', destroy_user_session_path, method: :delete, class: 'btn btn-outline-primary'
-        - else
+        - elsif controller_name == 'registrations'
           li.nav-item
             = button_to 'ログイン', new_user_session_path, class: 'btn btn-outline-primary me-3'
+        - elsif controller_name == 'sessions'
           li.nav-item
             = button_to '新規登録', new_user_registration_path, class: 'btn btn-primary'
