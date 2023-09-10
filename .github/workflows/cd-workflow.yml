@@ -50,6 +50,6 @@ jobs:
       
       - name: deploy to ECS
         run: |
-          aws ecs update-service --cluster ProjectA-ecs-cluster --service ProjectA-esc-service2 --force-new-deployment
-          aws ecs wait services-stable --cluster ProjectA-ecs-cluster --service ProjectA-esc-service2
-          aws ecs describe-services --cluster ProjectA-ecs-cluster --service ProjectA-esc-service2
+          aws ecs update-service --cluster ProjectA-ecs-cluster --service ProjectA-esc-service4 --force-new-deployment
+          aws ecs wait services-stable --cluster ProjectA-ecs-cluster --service ProjectA-esc-service4
+          aws ecs describe-services --cluster ProjectA-ecs-cluster --service ProjectA-esc-service4
