@@ -6,9 +6,6 @@ rm -f /myapp/tmp/pids/server.pid
 
 # production環境の場合のみ
 if [ "$RAILS_ENV" = "production" ]; then
-  yarn install --check-files
-  yarn build
-  yarn build:css
   bundle exec rails assets:precompile
   # --------------------------------------
   # 本番環境（AWS ECS）への初回デプロイ時に利用
