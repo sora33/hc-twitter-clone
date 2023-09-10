@@ -1,9 +1,12 @@
 name: ecr push image
 on:
-  pull_request:
+  # pull_request:
+  #   branches:
+  #     - main
+  #   types: [closed]
+  push:
     branches:
       - main
-    types: [closed]
 
 jobs:
   push:
