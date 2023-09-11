@@ -1,0 +1,57 @@
+name: push image to ECR and deploy to ECS
+# on:
+#   pull_request:
+#     branches:
+#       - main
+#     types: [closed]
+on: 
+  push:
+
+jobs:
+  push:
+    name: push image to ECR and deploy to ECS
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+
+      # - name: Set AWS CLI Debug Output (if needed for debugging)
+      #   run: |
+      #     echo "AWS_DEFAULT_OUTPUT=text" >> $GITHUB_ENV
+      #     echo "AWS_PAGER=" >> $GITHUB_ENV
+      #     # echo "AWS_DEBUG=true" >> $GITHUB_ENV
+
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: 'ap-northeast-1'
+          role-to-assume: 'arn:aws:iam::925173743335:role/oidc-role'
+
+      - uses: aws-actions/amazon-ecr-login@v1
+        id: login-ecr
+
+      - name: Build, tag, and push docker image to ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: "twitter-clone"
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build . --tag ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
+          docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
+          docker tag ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }} ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:latest
+          docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:latest
+
+      - name: Force new deployment and wait for services stability in ECS
+        env:
+          CLUSTER_NAME: "ProjectA-ecs-cluster"
+          SERVICE_NAME: "ProjectA-esc-service4"
+        run: |
+          aws ecs update-service --cluster ${{ env.CLUSTER_NAME }} --service ${{ env.SERVICE_NAME }} --force-new-deployment
+          aws ecs wait services-stable --cluster ${{ env.CLUSTER_NAME }} --service ${{ env.SERVICE_NAME }}
+          aws ecs describe-services --cluster ${{ env.CLUSTER_NAME }} --service ${{ env.SERVICE_NAME }}
+
+
+
+
