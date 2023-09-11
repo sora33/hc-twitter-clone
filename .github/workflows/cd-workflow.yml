@@ -1,55 +1,57 @@
-name: ecr push image
-on:
-  # pull_request:
-  #   branches:
-  #     - main
-  #   types: [closed]
+name: push image to ECR and deploy to ECS
+# on:
+#   pull_request:
+#     branches:
+#       - main
+#     types: [closed]
+on: 
   push:
 
 jobs:
   push:
-    name: deploy to ECR and ECS
+    name: push image to ECR and deploy to ECS
     runs-on: ubuntu-latest
     timeout-minutes: 10
-
-    # `permissions` を設定しないと OIDC が使えないので注意
     permissions:
       id-token: write
       contents: read
     steps:
       - uses: actions/checkout@v3
 
-      # AWS CLIデバッグ出力を設定
-      - name: Set AWS CLI Debug Output
-        run: |
-          echo "AWS_DEFAULT_OUTPUT=text" >> $GITHUB_ENV
-          echo "AWS_PAGER=" >> $GITHUB_ENV
-          echo "AWS_DEBUG=true" >> $GITHUB_ENV
-          
-      # AWS 認証
+      # - name: Set AWS CLI Debug Output (if needed for debugging)
+      #   run: |
+      #     echo "AWS_DEFAULT_OUTPUT=text" >> $GITHUB_ENV
+      #     echo "AWS_PAGER=" >> $GITHUB_ENV
+      #     # echo "AWS_DEBUG=true" >> $GITHUB_ENV
+
       - uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-region: 'ap-northeast-1' # リージョンを指定
+          aws-region: 'ap-northeast-1'
           role-to-assume: 'arn:aws:iam::925173743335:role/oidc-role'
 
-      # ECR ログイン
       - uses: aws-actions/amazon-ecr-login@v1
-        id: login-ecr # outputs で参照するために id を設定
+        id: login-ecr
 
-      - name: build and push docker image to ECR
+      - name: Build, tag, and push docker image to ECR
         env:
-          # ECR レジストリを `aws-actions/amazon-ecr-login` アクションの `outputs.registry` から取得
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: "twitter-clone" # イメージを push する ECR リポジトリ名
-          IMAGE_TAG: ${{ github.sha }} # イメージタグ。 Git のコミットハッシュにしておく
+          REPOSITORY: "twitter-clone"
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build . --tag ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
+          docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
           docker tag ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }} ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:latest
           docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:latest
-          docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
-      
-      - name: deploy to ECS
+
+      - name: Force new deployment and wait for services stability in ECS
+        env:
+          CLUSTER_NAME: "ProjectA-ecs-cluster"
+          SERVICE_NAME: "ProjectA-esc-service4"
         run: |
-          aws ecs update-service --cluster ProjectA-ecs-cluster --service ProjectA-esc-service4 --force-new-deployment
-          aws ecs wait services-stable --cluster ProjectA-ecs-cluster --service ProjectA-esc-service4
-          aws ecs describe-services --cluster ProjectA-ecs-cluster --service ProjectA-esc-service4
+          aws ecs update-service --cluster ${{ env.CLUSTER_NAME }} --service ${{ env.SERVICE_NAME }} --force-new-deployment
+          aws ecs wait services-stable --cluster ${{ env.CLUSTER_NAME }} --service ${{ env.SERVICE_NAME }}
+          aws ecs describe-services --cluster ${{ env.CLUSTER_NAME }} --service ${{ env.SERVICE_NAME }}
+
+
+
+
